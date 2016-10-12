@@ -8,12 +8,13 @@ namespace neural.Class
 {
     class TrainingData
     {
-        List<object> input; //T t1; T t2; T d;
-        List<object> output;
+        public double[] input; //T t1; T t2; T d;
+        public List<double> output;
 
-        public TrainingData(params object[] dataIn)
+        public TrainingData(params double[] dataIn)
         {
-            input = dataIn.ToList();
+            input = dataIn.ToArray();
+            output = new List<double>();
         }
     }
 }

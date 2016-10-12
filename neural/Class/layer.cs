@@ -8,11 +8,16 @@ namespace neural.Class
 {
     class layer
     {
-        Perceptron perceptron;
-        List<object> result;
-        public layer(int numberOfNeurons)
+        public Perceptron perceptron;
+        List<double> result;
+        public int size;
+        public int previousLayerSize;
+        public layer(int previousLayerSize, int numberOfNeurons)
         {
-            perceptron = new Perceptron(0,0, 1); //0 i 0 do zmiany
+            this.size = numberOfNeurons;
+            this.previousLayerSize = previousLayerSize;
+            perceptron = new Perceptron(numberOfNeurons, previousLayerSize, new Perceptron.myDelegate(Perceptron.sigmodFunction));
+            perceptron.randomScalesGenerate(10);
         }
     }
 }
