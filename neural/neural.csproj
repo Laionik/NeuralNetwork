@@ -47,6 +47,7 @@
     <Compile Include="Class\NeuralNetwork.cs" />
     <Compile Include="Class\Perceptron.cs" />
     <Compile Include="Class\TrainingData.cs" />
+    <Compile Include="Helper\MatrixHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

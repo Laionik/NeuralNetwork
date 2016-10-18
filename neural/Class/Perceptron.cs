@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace neural.Class
 {
@@ -7,58 +6,50 @@ namespace neural.Class
     class Perceptron
     {
         public double[,] scalesMatrix;
-        public delegate double myDelegate(double data);
+        public delegate double myDelegate(double data, bool deriv=false);
         public myDelegate activationFunction;
-        public object functionResult;
         public Perceptron(int sizeX, int sizeY, myDelegate activationFunction)
         {
             scalesMatrix = new double[sizeX, sizeY];
-            this.activationFunction += activationFunction;
-            //functionResult = this.activationFunction.DynamicInvoke(0);
+            this.activationFunction = activationFunction;
         }
 
+        public Perceptron(myDelegate activationFunction)
+        {
+            this.activationFunction = activationFunction;
+        }
+
+        /// <summary>
+        /// Funkcja aktywacyjna - binarna
+        /// </summary>
+        /// <param name="data">Element wektora/macierzy</param>
+        /// <returns>Wynik funkcji aktywacji - double</returns>
         public static double binaryFunction(double data)
         {
             return data < 0 ? 0 : 1;
         }
 
-        public static double sigmodFunction(double data)
+        /// <summary>
+        /// Funkcja aktywacyjna - sigmoidalna
+        /// </summary>
+        /// <param name="data">Element wektora/macierzy</param>
+        /// <returns>Wynik funkcji aktywacji - double</returns>
+        public static double sigmodFunction(double data, bool deriv=false)
         {
+            if (deriv)
+                return data * (1 - data);
             return 1 / (1 + Math.Pow(Math.E, 1 * (-1) * data));
         }
 
-
-        public void randomScalesGenerate(int maxScale)
+        /// <summary>
+        /// Generowanie losowych wartości wag
+        /// </summary>
+        public void randomScalesGenerate()
         {
             Random rnd = new Random();
             for (int first = 0; first < scalesMatrix.GetLength(0); first++)
                 for (int second = 0; second < scalesMatrix.GetLength(1); second++)
-                    scalesMatrix[first, second] = rnd.Next(maxScale);
+                    scalesMatrix[first, second] = rnd.NextDouble();
         }
-
-        //public static double? ActivationFunction(double data, int mode, double beta = 1)
-        //{
-        //    switch (mode)
-        //    {
-        //        case 1: //binary
-        //            return data < 0 ? 0 : 1;
-        //        case 2: //sigmod binary
-        //            return 1 / (1 + Math.Pow(Math.E, beta * (-1) * data));
-
-        //        default:
-        //            return null;
-        //    }
-        //}
-
-
-        //public List<object> Propagation()
-        //{
-        //zrob mnozenie macierzy
-        //}
-
-        //public List<object> MatrixMultiply(List<object> x1, List<object> x2)
-        //{
-
-        //}
     }
 }
