@@ -13,5 +13,11 @@ namespace neural.Class
             input = dataIn;
             output = dataOut;
         }
+
+        public TrainingData(double[] dataIn)
+        {
+            input = dataIn;
+            output = new double[0];
+        }
     }
 }

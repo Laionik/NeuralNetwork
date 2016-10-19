@@ -49,7 +49,7 @@ namespace neural.Class
             Random rnd = new Random();
             for (int first = 0; first < scalesMatrix.GetLength(0); first++)
                 for (int second = 0; second < scalesMatrix.GetLength(1); second++)
-                    scalesMatrix[first, second] = rnd.NextDouble();
+                    scalesMatrix[first, second] = rnd.NextDouble() * 10 - 5;
         }
     }
 }

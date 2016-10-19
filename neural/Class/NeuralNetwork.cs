@@ -1,4 +1,5 @@
 ﻿using neural.Helper;
+using System;
 using System.Linq;
 
 namespace neural.Class
@@ -19,13 +20,15 @@ namespace neural.Class
             LayerCreateInputOutput(inputSize, outputSize);
         }
 
+        // TODO
         /// <summary>
-        /// Przypisanie wartości
+        /// Rozszerzenie TrainingData
         /// </summary>
         /// <param name="data">Wartości startowe</param>
         public void Populate(double[] data)
         {
-            trData = new TrainingData(data, new double[] { });
+            // TODO
+            //trData = new TrainingData(data, new double[] { });
         }
 
         /// <summary>
@@ -47,7 +50,6 @@ namespace neural.Class
         public void AppendLayer(int n)
         {
             int lastInputLayerSize = 0;
-            var outputLayer = layerList.LastOrDefault() != null ? layerList.LastOrDefault().size : 0;
             var tempLayerList = layerList;
             layerList = new layer[tempLayerList.Length + 1];
             for (int index = 0; index < tempLayerList.Length - 1; index++)
@@ -56,7 +58,7 @@ namespace neural.Class
                 lastInputLayerSize = tempLayerList[index].size;
             }
             layerList[tempLayerList.Length - 1] = new layer(lastInputLayerSize, n, activationFunction);
-            layerList[tempLayerList.Length] = new layer(n, outputLayer, activationFunction);
+            layerList[tempLayerList.Length] = new layer(n, outputSize, activationFunction);
         }
 
         /// <summary>
@@ -66,17 +68,14 @@ namespace neural.Class
         /// <returns></returns>
         public double[,] Propagate(params double[] data)
         {
-            Populate(data);
-            double[,] inputData = new double[trData.input.Length, 1];
-            for (int i = 0; i < trData.input.Length; i++)
-            {
-                inputData[i, 0] = trData.input[i];
-            }
+            trData = new TrainingData(data, new double[] { });
+            double[,] inputData = MatrixHelper.ConvertToMatrix(trData.input);
 
-            for (int index = 1; index < layerList.Length - 1; index++)
+            for (int index = 1; index < layerList.Length; index++)
             {
                 inputData = MatrixHelper.MatrixMultiply(inputData, layerList[index].perceptron.scalesMatrix);
-                inputData = ExecuteActivationFunction(inputData, layerList[index].perceptron.activationFunction);
+                if (index != layerList.Length)
+                    inputData = ExecuteActivationFunction(inputData, layerList[index].perceptron.activationFunction);
                 layerList[index].values = inputData;
             }
             return inputData;
@@ -106,11 +105,7 @@ namespace neural.Class
         /// <returns>Macierz</returns>
         private double[,] ErrorCalculate(TrainingData trData)
         {
-            double[,] y = new double[trData.output.Length, 1];
-            for (int i = 0; i < trData.output.Length; i++)
-            {
-                y[i, 0] = trData.output[i];
-            }
+            double[,] y = MatrixHelper.ConvertToMatrix(trData.output);
             var ysim = Propagate(trData.input);
             return MatrixHelper.MatrixSubstraction(y, ysim);
         }
@@ -133,9 +128,10 @@ namespace neural.Class
                 var scalesMatrixTransposition = MatrixHelper.MatrixTransposition(layerList[numberOfLayers - index].perceptron.scalesMatrix);
                 error = MatrixHelper.MatrixMultiply(delta, scalesMatrixTransposition);
 
-                var matrixMultiplied = MatrixHelper.MatrixTransposition(MatrixHelper.MatrixMultiply(layerList[numberOfLayers - index - 1].values, delta));
-                var resultMatrixTransposition = MatrixHelper.MatrixTransposition(matrixMultiplied);
-                layerList[numberOfLayers - index].perceptron.scalesMatrix = MatrixHelper.MatrixSubstraction(layerList[numberOfLayers - index].perceptron.scalesMatrix, resultMatrixTransposition);
+
+                var matrixMultiplied = MatrixHelper.MatrixMultiply(layerList[numberOfLayers - index - 1].values, delta);
+                var matrixTransposed = MatrixHelper.MatrixTransposition(matrixMultiplied);
+                layerList[numberOfLayers - index].perceptron.scalesMatrix = MatrixHelper.MatrixSubstraction(layerList[numberOfLayers - index].perceptron.scalesMatrix, matrixTransposed);
             }
         }
     }
