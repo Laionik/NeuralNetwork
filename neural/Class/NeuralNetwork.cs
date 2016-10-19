@@ -122,12 +122,10 @@ namespace neural.Class
             for (int index = 0; index < numberOfLayers; index++)
             {
                 var valuesActivationFunction = ExecuteActivationFunction(layerList[numberOfLayers - index].values, activationFunction, true);
-
                 var delta = MatrixHelper.MatrixMultiply(error, valuesActivationFunction);
 
                 var scalesMatrixTransposition = MatrixHelper.MatrixTransposition(layerList[numberOfLayers - index].perceptron.scalesMatrix);
                 error = MatrixHelper.MatrixMultiply(delta, scalesMatrixTransposition);
-
 
                 var matrixMultiplied = MatrixHelper.MatrixMultiply(layerList[numberOfLayers - index - 1].values, delta);
                 var matrixTransposed = MatrixHelper.MatrixTransposition(matrixMultiplied);

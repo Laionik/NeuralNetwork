@@ -24,7 +24,7 @@ namespace neural.Helper
             {
                 for (int j = 0; j < secondColumns; j++)
                 {
-                    for (int k = 0; k < secondRows; k++)
+                    for (int k = 0; k < firstColumns; k++)
                     {
                         resultMatrix[i, j] += firstMatrix[i, k] * secondMatrix[k, j];
                     }
@@ -32,7 +32,7 @@ namespace neural.Helper
             }
             return resultMatrix;
         }
-
+        
         /// <summary>
         /// Odejmowanie macierzy
         /// </summary>
@@ -69,7 +69,7 @@ namespace neural.Helper
                     newMatrix[i, j] = matrix[j, i];
                 }
             }
-            return matrix;
+            return newMatrix;
         }
 
         /// <summary>
@@ -102,5 +102,15 @@ namespace neural.Helper
             }
             return matrix;
         }
+
+        //public static double[,] ConvertToMatrix(double[] input)
+        //{
+        //    double[,] matrix = new double[input.Length, 1];
+        //    for (int i = 0; i < input.Length; i++)
+        //    {
+        //        matrix[i, 0] = input[i];
+        //    }
+        //    return matrix;
+        //}
     }
 }
