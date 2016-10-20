@@ -18,7 +18,19 @@ namespace neural.Helper
             int secondColumns = secondMatrix.GetLength(1);
             int secondRows = secondMatrix.GetLength(0);
             if (firstColumns != secondRows)
-                throw new Exception("Macierze do siebie nie pasują. Wymiary macierzy " + firstRows + "x" + firstColumns + "---" + secondRows + "x" + secondColumns);
+            {
+                if (firstColumns < secondRows)
+                {
+                    firstMatrix = MatrixComplementColumns(firstMatrix, secondRows);
+                    firstColumns = secondRows;
+                }
+                else
+                {
+                    secondMatrix = MatrixComplementRows(secondMatrix, firstColumns);
+                    secondRows = firstColumns;
+                }
+            }
+            //throw new Exception("Macierze do siebie nie pasują. Wymiary macierzy " + firstRows + "x" + firstColumns + "---" + secondRows + "x" + secondColumns);
             double[,] resultMatrix = new double[firstRows, secondColumns];
             for (int i = 0; i < firstRows; i++)
             {
@@ -32,7 +44,75 @@ namespace neural.Helper
             }
             return resultMatrix;
         }
-        
+
+        /// <summary>
+        /// Dopełnienie macierzy o wiersze
+        /// </summary>
+        /// <param name="matrix">Macierz do dopełnienia</param>
+        /// <param name="totalRows">Nowa liczba wierszy</param>
+        /// <returns>Dopełniona macierz</returns>
+        private static double[,] MatrixComplementRows(double[,] matrix, int totalRows)
+        {
+            double[,] complementedMatrix = new double[totalRows, matrix.GetLength(1)];
+            for (int i = 0; i < matrix.GetLength(0); i++)
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                    complementedMatrix[i, j] = matrix[i, j];
+            return complementedMatrix;
+        }
+
+        /// <summary>
+        /// Dopełnienie macierzy o kolumny
+        /// </summary>
+        /// <param name="matrix">Macierz do dopełnienia</param>
+        /// <param name="totalColumns">Nowa liczba kolumn</param>
+        /// <returns>Dopełniona macierz</returns>
+        private static double[,] MatrixComplementColumns(double[,] matrix, int totalColumns)
+        {
+            double[,] complementedMatrix = new double[matrix.GetLength(0), totalColumns];
+            for (int i = 0; i < matrix.GetLength(0); i++)
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                    complementedMatrix[i, j] = matrix[i, j];
+            return complementedMatrix;
+        }
+
+        /// <summary>
+        /// Dopełnienie macierzy dla odejmowania
+        /// </summary>
+        /// <param name="firstMatrix">Macierz</param>
+        /// <param name="secondMatrix">Macierz</param>
+        private static void MatrixComplement(ref double[,] firstMatrix, ref double[,] secondMatrix)
+        {
+            int firstColumns = firstMatrix.GetLength(1);
+            int firstRows = firstMatrix.GetLength(0);
+            int secondColumns = secondMatrix.GetLength(1);
+            int secondRows = secondMatrix.GetLength(0);
+
+            if (firstColumns != secondColumns || firstRows != secondRows)
+            {
+                if (firstColumns < secondColumns)
+                {
+                    firstMatrix = MatrixComplementColumns(firstMatrix, secondColumns);
+                    firstColumns = secondColumns;
+                }
+                else
+                {
+                    secondMatrix = MatrixComplementColumns(secondMatrix, firstColumns);
+                    secondColumns = firstColumns;
+                }
+
+                if (firstRows < secondRows)
+                {
+                    firstMatrix = MatrixComplementRows(firstMatrix, secondRows);
+                    firstRows = secondRows;
+                }
+                else
+                {
+                    secondMatrix = MatrixComplementRows(secondMatrix, firstRows);
+                    secondRows = firstRows;
+                }
+            }
+        }
+
         /// <summary>
         /// Odejmowanie macierzy
         /// </summary>
@@ -41,6 +121,7 @@ namespace neural.Helper
         /// <returns>Macierz</returns>
         public static double[,] MatrixSubstraction(double[,] firstMatrix, double[,] secondMatrix)
         {
+            MatrixComplement(ref firstMatrix, ref secondMatrix);
             double[,] resultMatrix = new double[firstMatrix.GetLength(0), firstMatrix.GetLength(1)];
             for (int i = 0; i < firstMatrix.GetLength(0); i++)
             {

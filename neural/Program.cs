@@ -11,7 +11,7 @@ namespace neural
         {
             activationFunction = new Perceptron.myDelegate(Perceptron.sigmodFunction);
             double[] trainingData = new double[] { 3, 4, 5 };
-            //Task1(trainingData);
+            Task1(trainingData);
             Task2(trainingData);
             Console.ReadKey();
         }
@@ -41,16 +41,16 @@ namespace neural
                 nn.AppendLayer(5);
                 for (int i = 0; i < 1000; i++)
                 {
-                    nn.PropagateBack(new double[] { 3, 4, 5 }, new double[] { 0.1, 0.2, 0.3 }, activationFunction);
+                   nn.PropagateBack(new double[] { 3, 4, 5 }, new double[] { 0.1, 0.2, 0.3 }, activationFunction);
                 }
 
                 var result = nn.Propagate(trainingData);
                 Console.WriteLine("Result:");
                 MatrixHelper.MatrixDisplay(result);
             }
-            catch (Exception ex)
+           catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+               Console.WriteLine(ex.Message);
             }
         }
     }
