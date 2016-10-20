@@ -74,8 +74,7 @@ namespace neural.Class
             for (int index = 1; index < layerList.Length; index++)
             {
                 inputData = MatrixHelper.MatrixMultiply(inputData, layerList[index].perceptron.scalesMatrix);
-                if (index != layerList.Length)
-                    inputData = ExecuteActivationFunction(inputData, layerList[index].perceptron.activationFunction);
+                inputData = ExecuteActivationFunction(inputData, layerList[index].perceptron.activationFunction);
                 layerList[index].values = inputData;
             }
             return inputData;
