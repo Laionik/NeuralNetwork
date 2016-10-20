@@ -127,7 +127,7 @@ namespace neural.Helper
             {
                 for (int j = 0; j < firstMatrix.GetLength(1); j++)
                 {
-                    resultMatrix[i, j] = firstMatrix[i, j] * secondMatrix[i, j];
+                    resultMatrix[i, j] = firstMatrix[i, j] - secondMatrix[i, j];
                 }
             }
             return resultMatrix;
