@@ -38,7 +38,7 @@ namespace neural.Class
         {
             if (deriv)
                 return data * (1 - data);
-            return 1 / (1 + Math.Pow(Math.E, 1 * (-1) * data));
+            return 1 / (1 + Math.Pow(Math.E, data));
         }
 
         /// <summary>

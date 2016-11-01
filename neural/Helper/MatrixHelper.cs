@@ -30,7 +30,6 @@ namespace neural.Helper
                     secondRows = firstColumns;
                 }
             }
-            //throw new Exception("Macierze do siebie nie pasują. Wymiary macierzy " + firstRows + "x" + firstColumns + "---" + secondRows + "x" + secondColumns);
             double[,] resultMatrix = new double[firstRows, secondColumns];
             for (int i = 0; i < firstRows; i++)
             {
@@ -184,14 +183,74 @@ namespace neural.Helper
             return matrix;
         }
 
-        //public static double[,] ConvertToMatrix(double[] input)
-        //{
-        //    double[,] matrix = new double[input.Length, 1];
-        //    for (int i = 0; i < input.Length; i++)
-        //    {
-        //        matrix[i, 0] = input[i];
-        //    }
-        //    return matrix;
-        //}
+        /// <summary>
+        /// Mnożenie skalarne macierzy
+        /// </summary>
+        /// <param name="firstMatrix">Macierz</param>
+        /// <param name="secondMatrix">Macierz</param>
+        /// <returns>Macierz</returns>
+        public static double[,] MatrixScalar(double[,] firstMatrix, double[,] secondMatrix)
+        {
+            int firstColumns = firstMatrix.GetLength(1);
+            int firstRows = firstMatrix.GetLength(0);
+            int secondColumns = secondMatrix.GetLength(1);
+            int secondRows = secondMatrix.GetLength(0);
+
+            if (firstRows == secondColumns)
+            {
+                var resultMatrix = new double[secondRows, firstColumns];
+                for (int i = 0; i < secondRows; i++)
+                {
+                    if (secondColumns == 1)
+                    {
+                        for (int j = 0; j < firstColumns; j++)
+                        {
+                            resultMatrix[i, j] = firstMatrix[0, j] * secondMatrix[i, 0];
+                        }
+                    }
+                    else
+                    {
+                        for (int j = 0; j < firstColumns; j++)
+                        {
+                            resultMatrix[i, j] = firstMatrix[0, j] * secondMatrix[i, j];
+                        }
+                    }
+                }
+                return resultMatrix;
+            }
+            else
+            {
+                throw new Exception("Liczba wierszy pierwszej macierzy różni się od liczby kolumn drugiej");
+            }
+        }
+
+        /// <summary>
+        /// Mnożenie skalarne wektorów/macierzy o jednym wierszu
+        /// </summary>
+        /// <param name="firstMatrix">Macierz</param>
+        /// <param name="secondMatrix">Macierz</param>
+        /// <returns>Macierz</returns>
+        public static double[,] VectorScalar(double[,] firstMatrix, double[,] secondMatrix)
+        {
+            int firstColumns = firstMatrix.GetLength(1);
+            int secondColumns = secondMatrix.GetLength(1);
+            if (firstColumns == secondColumns)
+            {
+                var result = new double[1, secondColumns];
+                for (int i = 0; i < firstColumns; i++)
+                {
+                    result[0, i] = firstMatrix[0, i] * secondMatrix[0, i];
+                }
+
+                return result;
+            }
+            else
+            {
+                throw new Exception("Wektory mają różną długość");
+            }
+
+        }
+
     }
 }
+

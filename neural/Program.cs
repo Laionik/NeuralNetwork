@@ -39,11 +39,10 @@ namespace neural
                 Console.WriteLine("Back propagation");
                 NeuralNetwork nn = new NeuralNetwork(trainingData.Length, 3, activationFunction);
                 nn.AppendLayer(5);
-                for (int i = 0; i < 1000; i++)
+                for (int i = 0; i < 10000; i++)
                 {
-                   nn.PropagateBack(new double[] { 3, 4, 5 }, new double[] { 0.1, 0.2, 0.3 }, activationFunction);
+                   nn.PropagateBack(trainingData, new double[] { 0.1, 0.2, 0.3 }, activationFunction);
                 }
-
                 var result = nn.Propagate(trainingData);
                 Console.WriteLine("Result:");
                 MatrixHelper.MatrixDisplay(result);

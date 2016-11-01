@@ -10,7 +10,7 @@ namespace neural.Class
         public layer(int previousLayerSize, int numberOfNeurons, Perceptron.myDelegate activationFunction)
         {
             this.size = numberOfNeurons;
-            values = new double[numberOfNeurons, numberOfNeurons];
+            values = new double[1, numberOfNeurons];
             perceptron = new Perceptron(previousLayerSize, numberOfNeurons,  activationFunction);
             perceptron.randomScalesGenerate();
         }
